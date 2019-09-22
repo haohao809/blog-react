@@ -2,27 +2,20 @@ import React,  {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import Login from "./views/Login.js";
+import Blog from "./views/Blog.js";
 function App() {
   return (
     <Router>
       <div>
         <Header />
 
-        <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
+        <Route exact path="/" component={Login} />
+        <Route path="/blog" component={Blog} />
         <Route path="/topics" component={Topics} />
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
 }
 
 function Topic({ match }) {
@@ -57,10 +50,10 @@ function Header() {
   return (
     <ul>
       <li>
-        <Link to="/">Home</Link>
+        <Link to="/">Login</Link>
       </li>
       <li>
-        <Link to="/about">About</Link>
+        <Link to="/blog">Blog</Link>
       </li>
       <li>
         <Link to="/topics">Topics</Link>
