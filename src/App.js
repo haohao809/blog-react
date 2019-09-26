@@ -1,8 +1,9 @@
-import React,  {Component} from 'react';
+import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Login from "./views/Login.js";
 import Blog from "./views/Blog.js";
+import 'element-theme-default';
 function App() {
   return (
     <Router>
