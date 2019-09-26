@@ -25,8 +25,17 @@ class Login extends React.Component {
       const username = this.state.username;
       const password = this.state.password;
       this.postData('/api/users/login',{username:username,password:password})
-      .then(data => console.log('data',data))
-      .catch(err => console.log('err',err))
+      .then(data => 
+        {
+          if (data.errorCode === 0) {
+            console.log('登录成功');
+          } else {
+            console.log(data.message);
+          }
+          
+        }
+      )
+      .catch(err => console.log('err', err))
 
     }
     changeUsername(event) {
