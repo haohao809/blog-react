@@ -1,6 +1,6 @@
 import React from "react"
-
 import { Button, Input } from 'element-react';
+import '../css/login.css'
 class Login extends React.Component {
   constructor(props){
       super(props);
@@ -15,8 +15,8 @@ class Login extends React.Component {
 
     render() {
       return <div>
-      <div>用户名:<Input value={this.state.username} onChange={this.changeUsername}/></div>
-      <div>密码:<Input  value={this.state.password} onChange={this.changePassword}/></div>
+      <div>用户名:<Input placeholder="请输入用户名" value={this.state.username} onChange={this.changeUsername}/></div>
+      <div>密  码:<Input placeholder="请输入密码" value={this.state.password} onChange={this.changePassword}/></div>
       <Button  onClick={this.loginHandle}>登录</Button>
   </div>
     }
@@ -41,17 +41,13 @@ class Login extends React.Component {
 
     }
     changeUsername(event) {
-        const target = event.target;
-        const value = target.value;
         this.setState({
-          username: value
+          username: event
         })
     }
     changePassword(event) {
-      const target = event.target;
-      const value = target.value;
       this.setState({
-        password: value
+        password: event
       })
     }
     postData(url,data) {
