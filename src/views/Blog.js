@@ -1,6 +1,8 @@
 import React from "react";
-import { Table } from "element-react";
+import { Table, Button } from "element-react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { formatDateTime } from "../utils/utils.js"
+
 class Blog extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +21,15 @@ class Blog extends React.Component {
         {
           label: "标题",
           prop: "title"
+        },
+        {
+          label: "操作",
+          prop: "zip",
+          fixed: 'right',
+          width: 100,
+          render: ()=>{
+            return <span><Button type="text" size="small"><Link to="/detail">查看</Link></Button></span>
+          }
         }
       ],
       data: []
