@@ -21,7 +21,6 @@ class Login extends React.Component {
   </div>
     }
     loginHandle() {
-      console.log('登录');
       console.log(this.state.username);
       console.log(this.state.password);
       const username = this.state.username;
