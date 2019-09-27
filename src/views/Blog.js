@@ -47,6 +47,7 @@ class Blog extends React.Component {
           columns={this.state.columns}
           maxHeight={200}
           data={this.state.data}
+          onCurrentChange={item=>{this.changeColumns(item)}}
         />
       </div>
     );
@@ -59,7 +60,8 @@ class Blog extends React.Component {
          let obj = {
            date : formatDateTime(new Date(item.createtime)),
            name : item.author,
-           title: item.title
+           title: item.title,
+           id: item.id
          }
          list.push(obj)
       })
@@ -67,6 +69,9 @@ class Blog extends React.Component {
          data: list
       })
     })
+  }
+  changeColumns(item) {
+    console.log(item.id);
   }
 }
 export default Blog;
