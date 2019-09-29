@@ -76,7 +76,7 @@ class Blog extends React.Component {
      this.props.history.push({ pathname:'/detail',state:{id : `${item.id}` } })
   }
   openEdit(item) {
-     this.props.history.push({ pathname:'/edit',state:{id : `${item.id}` } })
+      this.props.history.push({ pathname:'/edit',state:{id : `${item.id}` } })
   }
 }
 export default Blog;
