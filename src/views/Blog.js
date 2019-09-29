@@ -28,7 +28,7 @@ class Blog extends React.Component {
           fixed: 'right',
           width: 100,
           render: ()=>{
-            return <span><Button type="text" size="small"><Link to="/detail">查看</Link></Button></span>
+            return <span><Button type="text" size="small">查看</Button></span>
           }
         }
       ],
@@ -72,6 +72,10 @@ class Blog extends React.Component {
   }
   changeColumns(item) {
     console.log(item.id);
+    this.setState({
+       id: item.id
+    })
+    this.props.history.push({ pathname:'/detail',state:{id : `${item.id}` } })
   }
 }
 export default Blog;
