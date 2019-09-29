@@ -1,6 +1,5 @@
 import React from "react";
 import { Table, Button } from "element-react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { formatDateTime } from "../utils/utils.js"
 
 class Blog extends React.Component {
@@ -27,13 +26,15 @@ class Blog extends React.Component {
           prop: "zip",
           fixed: 'right',
           width: 100,
-          render: ()=>{
-            return <span><Button type="text" size="small">查看</Button></span>
+          render: (item)=>{
+            return <span><Button type="text" size="small" onClick={this.openDeatil.bind(this,item)}>查看</Button><Button type="text" onClick={this.openEdit.bind(this,item)} size="small">编辑</Button></span>                  
           }
         }
       ],
       data: []
     };
+    this.openDeatil = this.openDeatil.bind(this);
+    this.openEdit = this.openEdit.bind(this);
   }
   componentWillMount (){
     this.getBlogList()
@@ -61,7 +62,7 @@ class Blog extends React.Component {
            date : formatDateTime(new Date(item.createtime)),
            name : item.author,
            title: item.title,
-           id: item.id
+           id: item.id,
          }
          list.push(obj)
       })
@@ -70,12 +71,12 @@ class Blog extends React.Component {
       })
     })
   }
-  changeColumns(item) {
-    console.log(item.id);
-    this.setState({
-       id: item.id
-    })
-    this.props.history.push({ pathname:'/detail',state:{id : `${item.id}` } })
+  openDeatil(item) {
+     console.log('item', item);
+     this.props.history.push({ pathname:'/detail',state:{id : `${item.id}` } })
+  }
+  openEdit(item) {
+     this.props.history.push({ pathname:'/edit',state:{id : `${item.id}` } })
   }
 }
 export default Blog;
