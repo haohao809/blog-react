@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button } from "element-react";
+import { Table, Button, Message } from "element-react";
 import utils from "../utils/utils.js"
 
 class Blog extends React.Component {
@@ -24,9 +24,13 @@ class Blog extends React.Component {
         {
           label: "操作",
           prop: "zip",
-          width: 100,
+          width: 150,
           render: (item)=>{
-            return <span><Button type="text" size="small" onClick={this.openDeatil.bind(this,item)}>查看</Button><Button type="text" onClick={this.openEdit.bind(this,item)} size="small">编辑</Button></span>                  
+            return <span>
+            <Button type="text" size="small" onClick={this.openDeatil.bind(this,item)}>查看</Button>
+            <Button type="text" onClick={this.openEdit.bind(this,item)} size="small">编辑</Button>
+            <Button type="text" onClick={this.delBlog.bind(this,item)} size="small">删除</Button>
+            </span>                  
           }
         }
       ],
@@ -51,7 +55,6 @@ class Blog extends React.Component {
           maxHeight={200}
           data={this.state.data}
           border={true}
-          onCurrentChange={item=>{this.changeColumns(item)}}
         />
       </div>
     );
@@ -74,12 +77,42 @@ class Blog extends React.Component {
       })
     })
   }
+  // 查看详情
   openDeatil(item) {
      console.log('item', item);
      this.props.history.push({ pathname:'/detail',state:{id : `${item.id}` } })
   }
+  // 编辑博客
   openEdit(item) {
       this.props.history.push({ pathname:'/edit',state:{id : `${item.id}` } })
   }
+  // 删除博客
+  delBlog(item) {
+    utils.postData(`/api/blogs/del?id=${item.id}`).then((data) =>{
+      if (data.errorCode === 0) {
+        console.log('删除成功');
+        this.open(0)
+      } else {
+        console.log(data.message);
+        this.open(1)
+      }
+    }).catch(err => console.log('err', err))
+  }
+    // 消息框
+    open (value) {
+      let text = '';
+      let type = '';
+      if (value === 0) {
+          text = '成功';
+          type = 'success';
+      } else {
+          text = '失败';
+          type = 'error';
+      }
+      Message({
+          message: text,
+          type: type
+      })
+  }  
 }
 export default Blog;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input } from 'element-react';
+import { Button, Input, Message } from 'element-react';
 import { formatDateTime } from "../utils/utils.js"
 import utils from "../utils/utils.js"
 import '../css/blogEdit.css'
@@ -57,8 +57,10 @@ class BlogEdit extends React.Component {
           {
             if (data.errorCode === 0) {
               console.log('保存成功');
+              this.open(0)
             } else {
               console.log(data.message);
+              this.open(1)
             }
             
           }
@@ -76,6 +78,22 @@ class BlogEdit extends React.Component {
     changeContent(e) {
         this.setState({
             content: e
+        })
+    }
+    // 消息框
+    open (value) {
+        let text = '';
+        let type = '';
+        if (value === 0) {
+            text = '成功';
+            type = 'success';
+        } else {
+            text = '失败';
+            type = 'error';
+        }
+        Message({
+            message: text,
+            type: type
         })
     }
 }
