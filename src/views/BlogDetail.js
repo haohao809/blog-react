@@ -1,5 +1,6 @@
 import React from "react";
-import { formatDateTime } from "../utils/utils.js"
+import utils from "../utils/utils.js"
+import '../css/index.css'
 class BlogDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +17,7 @@ class BlogDetail extends React.Component {
         this.getDetail(id);
     }
     render() {
-        return <div>
+        return <div className="wrap">
             <h1>{this.state.title}</h1>
             <div>
                 <span>时间: {this.state.time}</span>
@@ -35,7 +36,7 @@ class BlogDetail extends React.Component {
                 this.setState({
                     title: detailData.title,
                     content: detailData.content,
-                    time: formatDateTime(new Date(detailData.createtime)),
+                    time: utils.formatDateTime(new Date(detailData.createtime)),
                     author: detailData.author
                 })
             }

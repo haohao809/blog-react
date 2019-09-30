@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Button } from "element-react";
-import { formatDateTime } from "../utils/utils.js"
+import utils from "../utils/utils.js"
 
 class Blog extends React.Component {
   constructor(props) {
@@ -24,7 +24,6 @@ class Blog extends React.Component {
         {
           label: "操作",
           prop: "zip",
-          fixed: 'right',
           width: 100,
           render: (item)=>{
             return <span><Button type="text" size="small" onClick={this.openDeatil.bind(this,item)}>查看</Button><Button type="text" onClick={this.openEdit.bind(this,item)} size="small">编辑</Button></span>                  
@@ -40,14 +39,18 @@ class Blog extends React.Component {
     this.getBlogList()
   }
   render() {
+    const styleComponent = {
+        margin: "20px"
+    }
     return (
-      <div>
+      <div style={styleComponent}>
         <h1>博客</h1>
         <Table
-          style={{ width: 1000 }}
+          style={{ width: 800 }}
           columns={this.state.columns}
           maxHeight={200}
           data={this.state.data}
+          border={true}
           onCurrentChange={item=>{this.changeColumns(item)}}
         />
       </div>
@@ -59,7 +62,7 @@ class Blog extends React.Component {
       let list = [];
       data.forEach((item) => {
          let obj = {
-           date : formatDateTime(new Date(item.createtime)),
+           date : utils.formatDateTime(new Date(item.createtime)),
            name : item.author,
            title: item.title,
            id: item.id,

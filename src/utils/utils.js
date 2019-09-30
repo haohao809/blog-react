@@ -27,6 +27,26 @@ function formatDateTime(time, format = 'YYYY-MM-DD HH:mm:ss') {
 
     return format;
 }
-export  {
-    formatDateTime
+/**
+ * 封装POST请求
+ * @param {*} url 
+ * @param {*} data 
+ */
+function postData(url,data) {
+    return fetch(url, {
+      body: JSON.stringify(data),
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'content-type': 'application/json'
+      },
+      method: 'POST',
+      mode: 'cors',
+      referrer: 'no-referrer'
+
+    }).then(res => res.json())
+  }
+export default{
+    formatDateTime,
+    postData
 }

@@ -1,6 +1,7 @@
 import React from "react"
 import { Button, Input } from 'element-react';
 import '../css/login.css'
+import utils from "../utils/utils.js"
 class Login extends React.Component {
   constructor(props){
       super(props);
@@ -25,7 +26,7 @@ class Login extends React.Component {
       console.log(this.state.password);
       const username = this.state.username;
       const password = this.state.password;
-      this.postData('/api/users/login',{username:username,password:password})
+      utils.postData('/api/users/login',{username:username,password:password})
       .then(data => 
         {
           if (data.errorCode === 0) {
@@ -48,20 +49,6 @@ class Login extends React.Component {
       this.setState({
         password: event
       })
-    }
-    postData(url,data) {
-      return fetch(url, {
-        body: JSON.stringify(data),
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-          'content-type': 'application/json'
-        },
-        method: 'POST',
-        mode: 'cors',
-        referrer: 'no-referrer'
-
-      }).then(res => res.json())
     }
 }
 export default Login
