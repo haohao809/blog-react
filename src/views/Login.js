@@ -1,55 +1,96 @@
 import React from "react"
-import { Button, Input } from 'element-react';
+import { Button, Input, Dialog, Form, Message } from 'element-react';
 import '../css/login.css'
 import utils from "../utils/utils.js"
+import '../css/index.css'
 class Login extends React.Component {
-  constructor(props){
-      super(props);
-      this.state ={
-         username : '',
-         password : ''
-      };
-      this.loginHandle = this.loginHandle.bind(this);
-      this.changeUsername = this.changeUsername.bind(this);
-      this.changePassword = this.changePassword.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+      dialogVisible3: false
+    };
+    this.loginHandle = this.loginHandle.bind(this);
+    this.changeUsername = this.changeUsername.bind(this);
+    this.changePassword = this.changePassword.bind(this);
   }
 
-    render() {
-      return <div>
-      <div>用户名:<Input placeholder="请输入用户名" value={this.state.username} onChange={this.changeUsername}/></div>
-      <div>密  码:<Input placeholder="请输入密码" value={this.state.password} onChange={this.changePassword}/></div>
-      <Button  onClick={this.loginHandle}>登录</Button>
-  </div>
-    }
-    loginHandle() {
-      console.log(this.state.username);
-      console.log(this.state.password);
-      const username = this.state.username;
-      const password = this.state.password;
-      utils.postData('/api/users/login',{username:username,password:password})
-      .then(data => 
-        {
-          if (data.errorCode === 0) {
-            console.log('登录成功');
-          } else {
-            console.log(data.message);
-          }
-          
+  render() {
+    return <div className="wrap">
+      <Button onClick={() => this.setState({ dialogVisible3: true })}>登录</Button>
+      <Dialog
+        title="登录"
+        visible={this.state.dialogVisible3}
+        onCancel={() => this.setState({ dialogVisible3: false })}
+      >
+        <Dialog.Body>
+          <Form model={this.state.form}>
+            <Form.Item label="用户名" labelWidth="120">
+              <Input value={this.state.username} onChange={this.changeUsername}></Input>
+            </Form.Item>
+            <Form.Item label="密码" labelWidth="120">
+              <Input value={this.state.password} onChange={this.changePassword}></Input>
+            </Form.Item>
+          </Form>
+        </Dialog.Body>
+
+        <Dialog.Footer className="dialog-footer">
+          <Button onClick={() => this.setState({ dialogVisible3: false })}>取 消</Button>
+          <Button type="primary" onClick={this.loginHandle}>确 定</Button>
+        </Dialog.Footer>
+      </Dialog>
+    </div>
+  }
+  loginHandle() {
+    console.log(this.state.username);
+    console.log(this.state.password);
+    const username = this.state.username;
+    const password = this.state.password;
+    utils.postData('/api/users/login', { username: username, password: password })
+      .then(data => {
+        if (data.errorCode === 0) {
+          console.log('登录成功');
+          this.setState({
+            dialogVisible3: false
+          })
+          this.open(0);
+        } else {
+          console.log(data.message);
+          this.open(1);
         }
+
+      }
       )
       .catch(err => console.log('err', err))
 
+  }
+  changeUsername(event) {
+    this.setState({
+      username: event
+    })
+  }
+  changePassword(event) {
+    this.setState({
+      password: event
+    })
+  }
+  // 消息框
+  open(value) {
+    let text = '';
+    let type = '';
+    if (value === 0) {
+      text = '成功';
+      type = 'success';
+    } else {
+      text = '失败';
+      type = 'error';
     }
-    changeUsername(event) {
-        this.setState({
-          username: event
-        })
-    }
-    changePassword(event) {
-      this.setState({
-        password: event
-      })
-    }
+    Message({
+      message: text,
+      type: type
+    })
+  }
 }
 export default Login
 
