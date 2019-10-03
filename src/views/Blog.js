@@ -1,7 +1,9 @@
 import React from "react";
-import { Table, Button, Message, Dialog } from "element-react";
+import { Table, Button, Dialog } from "element-react";
 import utils from "../utils/utils.js";
-
+import BlogDetail from './BlogDetail.js'
+import BlogEdit from './BlogEdit.js'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 class Blog extends React.Component {
   constructor(props) {
     super(props);
@@ -84,6 +86,8 @@ class Blog extends React.Component {
           border={true}
         />
         <Button onClick={this.newBlog} style={buttonComponent}>新建博客</Button>
+        <Route path="/blog/detail" component={BlogDetail} />
+        <Route path="/blog/edit" component={BlogEdit} /> 
         <Dialog
           title="提示"
           size="tiny"
@@ -133,17 +137,17 @@ class Blog extends React.Component {
   openDeatil(item) {
     console.log("item", item);
     this.props.history.push({
-      pathname: "/detail",
+      pathname: "/blog/detail",
       state: { id: `${item.id}` }
     });
   }
   // 新建博客
   newBlog () {
-    this.props.history.push({ pathname: "/edit"});
+    this.props.history.push({ pathname: "/blog/edit"});
   }
   // 编辑博客
   openEdit(item) {
-    this.props.history.push({ pathname: "/edit", state: { id: `${item.id}` } });
+    this.props.history.push({ pathname: "/blog/edit", state: { id: `${item.id}` } });
   }
   // 删除博客
   delBlog(item) {
