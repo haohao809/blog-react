@@ -61,6 +61,7 @@ class Blog extends React.Component {
     this.openEdit = this.openEdit.bind(this);
     this.confirmDel = this.confirmDel.bind(this);
     this.delBlog = this.delBlog.bind(this);
+    this.newBlog = this.newBlog.bind(this);
   }
   componentWillMount() {
     this.getBlogList();
@@ -69,6 +70,9 @@ class Blog extends React.Component {
     const styleComponent = {
       margin: "20px"
     };
+    const buttonComponent = {
+      marginTop: "20px"
+    }
     return (
       <div style={styleComponent}>
         <h1>博客</h1>
@@ -79,6 +83,7 @@ class Blog extends React.Component {
           data={this.state.data}
           border={true}
         />
+        <Button onClick={this.newBlog} style={buttonComponent}>新建博客</Button>
         <Dialog
           title="提示"
           size="tiny"
@@ -131,6 +136,10 @@ class Blog extends React.Component {
       pathname: "/detail",
       state: { id: `${item.id}` }
     });
+  }
+  // 新建博客
+  newBlog () {
+    this.props.history.push({ pathname: "/edit"});
   }
   // 编辑博客
   openEdit(item) {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Input, Message } from 'element-react';
-import { formatDateTime } from "../utils/utils.js"
 import utils from "../utils/utils.js"
 import '../css/blogEdit.css'
 import '../css/index.css'
@@ -9,20 +8,32 @@ class BlogEdit extends React.Component {
         super(props)
         this.state = {
             title: '',
-            content: ''
+            content: '',
+            theme: ''
         }
         this.saveBlog = this.saveBlog.bind(this);
         this.changeTitle = this.changeTitle.bind(this);
         this.changeContent = this.changeContent.bind(this);
     }
-    componentWillMount (){
-        console.log('id',this.props.location.state.id);
-        const id = this.props.location.state.id;
-        this.getDetail(id);
+    componentWillMount (){        
+        if(this.props.location.state) {
+            const id = this.props.location.state.id;
+            this.getDetail(id);
+            this.setState({
+                theme: '编辑博客'
+            })
+            console.log('1111')
+        } else {
+            this.setState({
+                theme: '新建博客'
+            })
+            console.log('2222')
+        }
+        
     }
     render() {
         return <div className="wrap">
-            <h1>编辑博客</h1>
+            <h1>{this.state.theme}</h1>
             <Input value={this.state.title} onChange={this.changeTitle}></Input>
             <Input type="textarea" autosize={true} value={this.state.content} onChange={this.changeContent}></Input>
             <Button onClick={this.saveBlog}>保存</Button>
@@ -43,29 +54,50 @@ class BlogEdit extends React.Component {
 
         })        
     }
-    // 更新博客
+    // 保存
     saveBlog() {
-        const id = this.props.location.state.id;
         const title = this.state.title;
         const content = this.state.content;
         const param = {
             title,
             content
         }
-        utils.postData(`/api/blogs/update?id=${id}`, param)
-        .then(data => 
-          {
-            if (data.errorCode === 0) {
-              console.log('保存成功');
-              this.open(0)
-            } else {
-              console.log(data.message);
-              this.open(1)
-            }
-            
-          }
-        )
-        .catch(err => console.log('err', err))
+        // 更新博客
+        if(this.props.location.state) {
+            const id = this.props.location.state.id;
+            utils.postData(`/api/blogs/update?id=${id}`, param)
+            .then(data => 
+              {
+                if (data.errorCode === 0) {
+                  console.log('保存成功');
+                  this.open(0)
+                } else {
+                  console.log(data.message);
+                  this.open(1)
+                }
+                
+              }
+            )
+            .catch(err => console.log('err', err))
+        }
+        // 新建博客
+        else {
+            utils.postData(`/api/blogs/new`, param)
+            .then(data => 
+              {
+                if (data.errorCode === 0) {
+                  console.log('新建成功');
+                  this.open(0)
+                } else {
+                  console.log(data.message);
+                  this.open(1)
+                }
+                
+              }
+            )
+            .catch(err => console.log('err', err))
+        }
+
 
     }
     // 监听titile变化
