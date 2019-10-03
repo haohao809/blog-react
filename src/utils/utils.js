@@ -1,3 +1,4 @@
+import { Message } from "element-react";
 // 工具类函数
 /** 通用处理工具 **/
 /**
@@ -46,7 +47,25 @@ function postData(url,data) {
 
     }).then(res => res.json())
   }
+
+  // 消息框
+function open(value) {
+    let text = "";
+    let type = "";
+    if (value === 0) {
+      text = "成功";
+      type = "success";
+    } else {
+      text = "失败";
+      type = "error";
+    }
+    Message({
+      message: text,
+      type: type
+    });
+  }
 export default{
     formatDateTime,
-    postData
+    postData,
+    open
 }

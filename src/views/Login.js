@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Input, Dialog, Form, Message } from 'element-react';
+import { Button, Input, Dialog, Form } from 'element-react';
 import '../css/login.css'
 import utils from "../utils/utils.js"
 import '../css/index.css'
@@ -54,10 +54,10 @@ class Login extends React.Component {
           this.setState({
             dialogVisible3: false
           })
-          this.open(0);
+          utils.open(0);
         } else {
           console.log(data.message);
-          this.open(1);
+          utils.open(1);
         }
 
       }
@@ -73,22 +73,6 @@ class Login extends React.Component {
   changePassword(event) {
     this.setState({
       password: event
-    })
-  }
-  // 消息框
-  open(value) {
-    let text = '';
-    let type = '';
-    if (value === 0) {
-      text = '成功';
-      type = 'success';
-    } else {
-      text = '失败';
-      type = 'error';
-    }
-    Message({
-      message: text,
-      type: type
     })
   }
 }

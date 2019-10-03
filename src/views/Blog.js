@@ -162,30 +162,17 @@ class Blog extends React.Component {
      .then(data => {
        if (data.errorCode === 0) {
          console.log("删除成功");
-         this.open(0);
+         utils.open(0);
+         this.setState({
+          dialogVisible: false
+        })         
          this.getBlogList();
        } else {
          console.log(data.message);
-         this.open(1);
+         utils.open(1);
        }
      })
      .catch(err => console.log("err", err));
-  }
-  // 消息框
-  open(value) {
-    let text = "";
-    let type = "";
-    if (value === 0) {
-      text = "成功";
-      type = "success";
-    } else {
-      text = "失败";
-      type = "error";
-    }
-    Message({
-      message: text,
-      type: type
-    });
   }
 }
 export default Blog;
