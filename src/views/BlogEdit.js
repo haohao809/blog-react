@@ -22,12 +22,10 @@ class BlogEdit extends React.Component {
             this.setState({
                 theme: '编辑博客'
             })
-            console.log('1111')
         } else {
             this.setState({
                 theme: '新建博客'
             })
-            console.log('2222')
         }
         
     }

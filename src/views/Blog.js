@@ -66,7 +66,17 @@ class Blog extends React.Component {
     this.newBlog = this.newBlog.bind(this);
   }
   componentWillMount() {
-    this.getBlogList();
+    this.getBlogList(); 
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log("nextProps",nextProps);
+    if(nextProps.location.pathname === '/blog') {
+       this.setState({
+         showorhide:{
+           display: "block"
+         }
+       })
+    }
   }
   render() {
     const styleComponent = {
@@ -77,6 +87,7 @@ class Blog extends React.Component {
     }
     return (
       <div style={styleComponent}>
+        <div style={this.state.showorhide}>
         <h1>博客</h1>
         <Table
           style={{ width: 800 }}
@@ -86,6 +97,7 @@ class Blog extends React.Component {
           border={true}
         />
         <Button onClick={this.newBlog} style={buttonComponent}>新建博客</Button>
+        </div>
         <Route path="/blog/detail" component={BlogDetail} />
         <Route path="/blog/edit" component={BlogEdit} /> 
         <Dialog
@@ -136,6 +148,11 @@ class Blog extends React.Component {
   // 查看详情
   openDeatil(item) {
     console.log("item", item);
+    this.setState({
+      showorhide: {
+         display: "none"
+      }
+    })
     this.props.history.push({
       pathname: "/blog/detail",
       state: { id: `${item.id}` }
@@ -143,10 +160,20 @@ class Blog extends React.Component {
   }
   // 新建博客
   newBlog () {
+    this.setState({
+      showorhide: {
+         display: "none"
+      }
+    })
     this.props.history.push({ pathname: "/blog/edit"});
   }
   // 编辑博客
   openEdit(item) {
+    this.setState({
+      showorhide: {
+         display: "none"
+      }
+    })
     this.props.history.push({ pathname: "/blog/edit", state: { id: `${item.id}` } });
   }
   // 删除博客
