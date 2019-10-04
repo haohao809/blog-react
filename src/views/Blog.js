@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button, Dialog } from "element-react";
+import { Table, Button, Dialog, MessageBox } from "element-react";
 import utils from "../utils/utils.js";
 import BlogDetail from './BlogDetail.js'
 import BlogEdit from './BlogEdit.js'
@@ -66,16 +66,16 @@ class Blog extends React.Component {
     this.newBlog = this.newBlog.bind(this);
   }
   componentWillMount() {
-    this.getBlogList(); 
+    this.getBlogList();
   }
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps",nextProps);
-    if(nextProps.location.pathname === '/blog') {
-       this.setState({
-         showorhide:{
-           display: "block"
-         }
-       })
+    console.log("nextProps", nextProps);
+    if (nextProps.location.pathname === '/blog') {
+      this.setState({
+        showorhide: {
+          display: "block"
+        }
+      })
     }
   }
   render() {
@@ -88,18 +88,18 @@ class Blog extends React.Component {
     return (
       <div style={styleComponent}>
         <div style={this.state.showorhide}>
-        <h1>博客</h1>
-        <Table
-          style={{ width: 800 }}
-          columns={this.state.columns}
-          maxHeight={200}
-          data={this.state.data}
-          border={true}
-        />
-        <Button onClick={this.newBlog} style={buttonComponent}>新建博客</Button>
+          <h1>博客</h1>
+          <Table
+            style={{ width: 800 }}
+            columns={this.state.columns}
+            maxHeight={200}
+            data={this.state.data}
+            border={true}
+          />
+          <Button onClick={this.newBlog} style={buttonComponent}>新建博客</Button>
         </div>
         <Route path="/blog/detail" component={BlogDetail} />
-        <Route path="/blog/edit" component={BlogEdit} /> 
+        <Route path="/blog/edit" component={BlogEdit} />
         <Dialog
           title="提示"
           size="tiny"
@@ -129,20 +129,30 @@ class Blog extends React.Component {
     fetch("/api/blogs/list")
       .then(res => res.json())
       .then(listData => {
-        const data = listData.data;
-        let list = [];
-        data.forEach(item => {
-          let obj = {
-            date: utils.formatDateTime(new Date(item.createtime)),
-            name: item.author,
-            title: item.title,
-            id: item.id
-          };
-          list.push(obj);
-        });
-        this.setState({
-          data: list
-        });
+        console.log('listData', listData);
+        if (listData.errorCode === 0) {
+          const data = listData.data;
+          let list = [];
+          data.forEach(item => {
+            let obj = {
+              date: utils.formatDateTime(new Date(item.createtime)),
+              name: item.author,
+              title: item.title,
+              id: item.id
+            };
+            list.push(obj);
+          });
+          this.setState({
+            data: list
+          });
+        } else if (listData.errorCode === -1) {
+          MessageBox.alert('请先登录之后再查看', '未登录',{showClose:false}).then(() => {
+            this.props.history.push({
+              pathname: "/"
+            });
+          });
+
+        }
       });
   }
   // 查看详情
@@ -150,7 +160,7 @@ class Blog extends React.Component {
     console.log("item", item);
     this.setState({
       showorhide: {
-         display: "none"
+        display: "none"
       }
     })
     this.props.history.push({
@@ -159,51 +169,51 @@ class Blog extends React.Component {
     });
   }
   // 新建博客
-  newBlog () {
+  newBlog() {
     this.setState({
       showorhide: {
-         display: "none"
+        display: "none"
       }
     })
-    this.props.history.push({ pathname: "/blog/edit"});
+    this.props.history.push({ pathname: "/blog/edit" });
   }
   // 编辑博客
   openEdit(item) {
     this.setState({
       showorhide: {
-         display: "none"
+        display: "none"
       }
     })
     this.props.history.push({ pathname: "/blog/edit", state: { id: `${item.id}` } });
   }
   // 删除博客
   delBlog(item) {
-    console.log('item',item);
-      this.setState({
-        dialogVisible: true
-      })
-      this.currentId = item.id;   //设置全局变量
+    console.log('item', item);
+    this.setState({
+      dialogVisible: true
+    })
+    this.currentId = item.id;   //设置全局变量
   }
   // 确认删除博客
-  confirmDel(){
-     const id= this.currentId;
-     console.log('id',id);
-     utils
-     .postData(`/api/blogs/del?id=${id}`)
-     .then(data => {
-       if (data.errorCode === 0) {
-         console.log("删除成功");
-         utils.open(0);
-         this.setState({
-          dialogVisible: false
-        })         
-         this.getBlogList();
-       } else {
-         console.log(data.message);
-         utils.open(1);
-       }
-     })
-     .catch(err => console.log("err", err));
+  confirmDel() {
+    const id = this.currentId;
+    console.log('id', id);
+    utils
+      .postData(`/api/blogs/del?id=${id}`)
+      .then(data => {
+        if (data.errorCode === 0) {
+          console.log("删除成功");
+          utils.open(0);
+          this.setState({
+            dialogVisible: false
+          })
+          this.getBlogList();
+        } else {
+          console.log(data.message);
+          utils.open(1);
+        }
+      })
+      .catch(err => console.log("err", err));
   }
 }
 export default Blog;
