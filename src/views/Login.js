@@ -9,9 +9,11 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      dialogVisible3: false
+      dialogVisible3: false,
+      dialogVisible2: false
     };
     this.loginHandle = this.loginHandle.bind(this);
+    this.registerHandle = this.registerHandle.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
     this.changePassword = this.changePassword.bind(this);
   }
@@ -19,6 +21,7 @@ class Login extends React.Component {
   render() {
     return <div className="wrap">
       <Button onClick={() => this.setState({ dialogVisible3: true })}>登录</Button>
+      <Button onClick={() => this.setState({ dialogVisible2: true })}>注册</Button>
       <Dialog
         title="登录"
         visible={this.state.dialogVisible3}
@@ -38,6 +41,27 @@ class Login extends React.Component {
         <Dialog.Footer className="dialog-footer">
           <Button onClick={() => this.setState({ dialogVisible3: false })}>取 消</Button>
           <Button type="primary" onClick={this.loginHandle}>确 定</Button>
+        </Dialog.Footer>
+      </Dialog>
+      <Dialog
+        title="注册"
+        visible={this.state.dialogVisible2}
+        onCancel={() => this.setState({ dialogVisible2: false })}
+      >
+        <Dialog.Body>
+          <Form model={this.state.form}>
+            <Form.Item label="用户名" labelWidth="120">
+              <Input value={this.state.username} onChange={this.changeUsername}></Input>
+            </Form.Item>
+            <Form.Item label="密码" labelWidth="120">
+              <Input value={this.state.password} onChange={this.changePassword}></Input>
+            </Form.Item>
+          </Form>
+        </Dialog.Body>
+
+        <Dialog.Footer className="dialog-footer">
+          <Button onClick={() => this.setState({ dialogVisible2: false })}>取 消</Button>
+          <Button type="primary" onClick={this.registerHandle}>确 定</Button>
         </Dialog.Footer>
       </Dialog>
     </div>
@@ -74,6 +98,9 @@ class Login extends React.Component {
     this.setState({
       password: event
     })
+  }
+  registerHandle() {
+    
   }
 }
 export default Login
