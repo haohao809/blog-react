@@ -9,6 +9,7 @@ class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
+      realname: '',
       dialogVisible3: false,
       dialogVisible2: false
     };
@@ -16,6 +17,7 @@ class Login extends React.Component {
     this.registerHandle = this.registerHandle.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
     this.changePassword = this.changePassword.bind(this);
+    this.changeRealname = this.changeRealname.bind(this);
   }
 
   render() {
@@ -55,6 +57,9 @@ class Login extends React.Component {
             </Form.Item>
             <Form.Item label="密码" labelWidth="120">
               <Input value={this.state.password} onChange={this.changePassword}></Input>
+            </Form.Item>
+            <Form.Item label="真实名字" labelWidth="120">
+              <Input value={this.state.realname} onChange={this.changeRealname}></Input>
             </Form.Item>
           </Form>
         </Dialog.Body>
@@ -99,8 +104,31 @@ class Login extends React.Component {
       password: event
     })
   }
+  changeRealname(event) {
+    this.setState({
+      realname: event
+    })   
+  }
   registerHandle() {
-    
+    const username = this.state.username;
+    const password = this.state.password;
+    const realname = this.state.realname;
+    utils.postData('/api/users/register', { username: username, password: password, realname: realname })
+      .then(data => {
+        if (data.errorCode === 0) {
+          console.log('注册成功');
+          this.setState({
+            dialogVisible2: false
+          })
+          utils.open(0);
+        } else {
+          console.log(data.message);
+          utils.open(1);
+        }
+
+      }
+      )
+      .catch(err => console.log('err', err))    
   }
 }
 export default Login
